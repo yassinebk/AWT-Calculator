@@ -8,7 +8,7 @@ public class AppController {
     Label labelComp;
     ArrayList<String> passedOps;
     boolean toClearInput;
-    final String[] operators = {"/", "+", "-", "%","="};
+    final String[] operators = {"/", "+", "-", "%","=","*"};
     AppController(){
         passedOps=new ArrayList<>();
         label="";
@@ -39,44 +39,48 @@ public class AppController {
     public void parseLabelToResult(){
         StringBuilder temp= new StringBuilder();
         int firstOperand =0;
-       for(int i=0 ;i<label.length();i++ ){
-           if(Character.isDigit(label.charAt(i))) {
-               temp.append(label.charAt(i));
-           }
-           else if(Character.toString(label.charAt(i)).equals(passedOps.get(0))){
-               firstOperand=Integer.parseInt(temp.toString());
-               temp.delete(0,temp.length()+1);
-           }
-      }
+        if('-' != label.charAt(0)) {
+            for (int i = 0; i < label.length(); i++) {
+                if (Character.isDigit(label.charAt(i))) {
+                    temp.append(label.charAt(i));
+                } else if (Character.toString(label.charAt(i)).equals(passedOps.get(0))) {
+                    firstOperand = Integer.parseInt(temp.toString());
+                    temp.delete(0, temp.length() + 1);
+                }
+            }
 
-       int secondOperand=Integer.parseInt(temp.toString());
 
-       switch(passedOps.get(0)){
-           case "+":
-               labelComp.setText(String.valueOf((firstOperand+secondOperand)));
-               break;
-           case "-":
-               if(secondOperand==0)
-                   labelComp.setText(String.valueOf((-firstOperand)));
-               else
-               labelComp.setText(String.valueOf((firstOperand+secondOperand)));
-               break;
-           case "/":
-               if(secondOperand==0){handleError();}
-               else{
-                   labelComp.setText(String.valueOf(firstOperand/secondOperand));
-               }
-               System.out.printf("%s %d %d","here",firstOperand,secondOperand);
-               break;
-           case "%":
-               labelComp.setText(String.valueOf(firstOperand%secondOperand));
-               break;
-           case "*":
-               labelComp.setText(String.valueOf(firstOperand*secondOperand));
-               break;
-           default:
-               handleError();
-       }
+            int secondOperand = Integer.parseInt(temp.toString());
+            switch(passedOps.get(0)){
+                case "+":
+                    labelComp.setText(String.valueOf((firstOperand+secondOperand)));
+                    break;
+                case "-":
+                    labelComp.setText(String.valueOf((firstOperand-secondOperand)));
+                    break;
+                case "/":
+                    if(secondOperand==0){handleError();}
+                    else{
+                        labelComp.setText(String.valueOf(firstOperand/secondOperand));
+                    }
+                    System.out.printf("%s %d %d","here",firstOperand,secondOperand);
+                    break;
+                case "%":
+                    labelComp.setText(String.valueOf(firstOperand%secondOperand));
+                    break;
+                case "*":
+                    labelComp.setText(String.valueOf(firstOperand*secondOperand));
+                    break;
+                default:
+                    handleError();
+            }
+        }
+        else{
+            firstOperand=Integer.parseInt(label.substring(1));
+            labelComp.setText(String.valueOf((-firstOperand)));
+        }
+
+
        passedOps.clear();
        toClearInput=true;
     }

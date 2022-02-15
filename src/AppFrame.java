@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class AppFrame extends Frame implements ActionListener, WindowListener {
 
-  final String[] operators = {"/", "+", "-", "%","=","*"};
+  final String[] operators = {"/", "+", "-", "%","*","=",};
   ArrayList<NumberButton> numberButtons;
   ArrayList<OperatorButton> operatorButtons;
   AppController appController;
